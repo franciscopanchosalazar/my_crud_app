@@ -1,1 +1,23 @@
-Create the folder and install flask
+1- Create the folder and init git:
+I cretated my python file before doing all this (this can be done also later on, but this is the way I do it)
+open a terminal in the folder and enter git init.
+
+2- Create a git ignore file, so we don't track the virtual environment and other stuff:
+echo venv/ > .gitignore
+echo __pycache__/ >> .gitignore
+echo *.pyc >> .gitignore
+echo .env >> .gitignore
+
+3- Push to GitHub:
+Create a repository in GitHub with the name my_crud_app, then push from git to GitHub.
+
+git branch -M main
+git remote add origin https://github.com/franciscopanchosalazar/my_crud_app.git
+git push -u origin main
+
+4- create virtual environment:
+To create virtual environment we open vscode in the folder just created (by opening a terminal in the folder and typing code .), then in the terminal type: python -m venv venv, a folder call venv will be created.
+
+Flask is a micro web framework for Python. In simple terms, it lets you turn your Python scripts into web applications — so instead of just running code in the terminal, you can build websites and APIs that interact with users and databases. It’s lightweight, flexible, and widely used for small-to-medium projects (perfect for learning CRUD apps).
+
+2- 
