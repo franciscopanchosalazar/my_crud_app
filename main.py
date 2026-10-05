@@ -10,6 +10,7 @@ load_dotenv()
 app = Flask(__name__) 
 
 # Connect to mysql using credentials stored in .env
+# mysql.connector.connect will always ask for host, user, password and database
 db = mysql.connector.connect(
     host=os.getenv("DB_HOST"),
     user=os.getenv("DB_USER"),
@@ -21,7 +22,7 @@ db = mysql.connector.connect(
 cursor = db.cursor()
 
 # Defines a Flask route at /add_service.
-# It only accepts POST requests (used for creating new records).
+# It only accepts POST requests, A POST request is used when the client wants to send data to the server.
 # When someone sends data to this URL, the function add_service() runs.
 
 @app.route('/add_service', methods=['POST'])
@@ -50,5 +51,7 @@ def add_service():
 
     # Saves the changes in the data base
     db.commit()
-    
+
     return jsonify({"message": "Service job added successfully!"})
+
+# ------------------------------------------------------------------------------------------------------------------------------

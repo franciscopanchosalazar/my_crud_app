@@ -71,7 +71,14 @@ CREATE TABLE equipment_service (
 );
 
 # Insert info
-
+# Used just as a first test
 INSERT INTO equipment_service (equipment_type, brand, model, serial_number, issue_reported, service_date, technician, status)VALUES('Autoclave', 'Melag', 'Cliniclave c45', 'SN12345',  'Fails pressure test after 20 minutes, possible gasket leak',  '2026-10-04', 'Francisco', 'Pending');
 
+10- Working in the python file (I'll separate the sections by lines, being this one the first)
 
+11- Test by running flask run in the terminal
+By default, flask run looks for a file named app.py or wsgi.py in the current directory, and inside it a variable called app.
+as the python file here is called main, to test we'll have to either change the name of the file or enter:
+flask --app main run
+
+We also need to install post man to send requests in order to test.
