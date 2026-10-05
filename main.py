@@ -31,7 +31,7 @@ def add_service():
     data = request.json
     sql_query = """INSERT INTO equipment_service 
             (equipment_type, brand, model, serial_number, issue_reported, service_date, technician, status)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""" # %s are place holders for the values to insert into the table
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""" # %s are place holders for the values to insert into the table later
 
     # Collects the values from the JSON request and puts them into a tuple
     values = (
@@ -75,3 +75,23 @@ def get_services():
         result.append(dict(zip(columns, row)))
 
     return jsonify(result)
+
+# ------------------------------------------------------------------------------------------------------------------------------
+
+# <int:id> captures which record to update
+@app.route('/services/<int:id>', methods=['PUT'])
+
+def update_service(id): # Here the id will come from <int:id>
+    # Reads the JSON body sent in the request (request is a flask method), 
+    # so if we send { "status": "Complete" }, that will be storaged in the data variable
+    data = request.json 
+    
+    # Updates the matching row in the database.
+    cursor = db.cursor()
+    sql_query = "UPDATE equipment_service SET status=%s WHERE id=%s"
+
+    # Example: If data['status'] = "Complete" and id = 2, the values will be replaced in the following line
+    cursor.execute(sql_query, (data['status'], id))
+    db.commit()
+
+    return jsonify({"message": "Service updated"})
