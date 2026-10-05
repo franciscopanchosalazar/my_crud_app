@@ -18,9 +18,6 @@ db = mysql.connector.connect(
     database=os.getenv("DB_NAME")
 )
 
-# The cursor is what we use to execute SQL commands like INSERT, SELECT, UPDATE, DELETE.
-cursor = db.cursor()
-
 # Defines a Flask route at /add_service.
 # It only accepts POST requests, A POST request is used when the client wants to send data to the server.
 # When someone sends data to this URL, the function add_service() runs.
@@ -28,11 +25,13 @@ cursor = db.cursor()
 @app.route('/add_service', methods=['POST'])
 
 def add_service():
+    # The cursor is what we use to execute SQL commands like INSERT, SELECT, UPDATE, DELETE.
+    cursor = db.cursor()
     # Reads the incoming JSON body from the request.
     data = request.json
-    sql = """INSERT INTO equipment_service 
-             (equipment_type, brand, model, serial_number, issue_reported, service_date, technician, status)
-             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""" # %s are place holders for the values to insert into the table
+    sql_query = """INSERT INTO equipment_service 
+            (equipment_type, brand, model, serial_number, issue_reported, service_date, technician, status)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""" # %s are place holders for the values to insert into the table
 
     # Collects the values from the JSON request and puts them into a tuple
     values = (
@@ -47,7 +46,7 @@ def add_service():
     )
 
     # Executes the SQL command with the provided values
-    cursor.execute(sql, values)
+    cursor.execute(sql_query, values)
 
     # Saves the changes in the data base
     db.commit()
@@ -55,3 +54,24 @@ def add_service():
     return jsonify({"message": "Service job added successfully!"})
 
 # ------------------------------------------------------------------------------------------------------------------------------
+
+# Gets data from a flask route
+@app.route('/services', methods=['GET'])
+
+def get_services():
+    cursor = db.cursor()
+    sql_query = """SELECT * FROM equipment_service""" 
+    cursor.execute(sql_query)
+    rows = cursor.fetchall()
+
+    # Extracts the column names from the query result.
+    columns = [desc[0] for desc in cursor.description]
+
+    # Map each row (tuple) into a dictionary with column names
+    result = []
+    for row in rows:
+        # zip pairs the rows and columns by index, so if you get confused in the future, just google how do this line
+        # know what to pair?
+        result.append(dict(zip(columns, row)))
+
+    return jsonify(result)
