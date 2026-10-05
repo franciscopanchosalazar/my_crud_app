@@ -15,9 +15,63 @@ git branch -M main
 git remote add origin https://github.com/franciscopanchosalazar/my_crud_app.git
 git push -u origin main
 
-4- create virtual environment:
+4- create and activate virtual environment:
 To create virtual environment we open vscode in the folder just created (by opening a terminal in the folder and typing code .), then in the terminal type: python -m venv venv, a folder call venv will be created.
 
+to activate we have to enter venv\Scripts\activate
+
+5- Install flask and mysql-connector-python
+:
+pip install flask
 Flask is a micro web framework for Python. In simple terms, it lets you turn your Python scripts into web applications — so instead of just running code in the terminal, you can build websites and APIs that interact with users and databases. It’s lightweight, flexible, and widely used for small-to-medium projects (perfect for learning CRUD apps).
 
-2- 
+pip install mysql-connector-python
+allows us to connect python with MySql.
+
+6- Create a requirements file:
+pip freeze > requirements.txt
+
+pip freeze lists all the Python packages currently installed in your virtual environment (like Flask, mysql-connector, etc.).
+> requirements.txt saves that list into a file called requirements.txt.
+
+It is important because Reproducibility: If you share your project, others can install the exact same versions by running:
+pip install -r requirements.txt
+
+IF WE INSTALL A NEW LIBRARY ON PYTHON, WE ALWAYS NEED TO UPDATE THE FILE BY ENTERING THE SAME LINE AGAIN, WHICH WILL BE OVERWRITE THE FILE.
+pip freeze > requirements.txt
+
+7- always commit and push when changes have been done.
+git status (see what we have done)
+git add . (add everything)
+git commit -m "add changes as text"
+git branch -M main (ensures we are in the main branch)
+git push -u origin main (push to GitHub)
+
+8- Start working in MySQL:
+open MySQL by entering mysql -u root -p, it is going to ask for your password.
+
+this will open MySQL, I can also work from Workbench, as the database is storage in the same server location.
+Do not work in Sql server management studio as this is a Microsoft software and works in different folders.
+
+9- Create the data base and working on it:
+This project is based on autoclaves, so everything will be related to that field.
+
+CREATE DATABASE db_name;
+USE db_name;
+CREATE TABLE equipment_service (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    equipment_type VARCHAR(100) NOT NULL,
+    brand VARCHAR(100),
+    model VARCHAR(100),
+    serial_number VARCHAR(100) UNIQUE,
+    issue_reported TEXT,
+    service_date DATE,
+    technician VARCHAR(100),
+    status ENUM('Pending','In Progress','Completed') DEFAULT 'Pending'
+);
+
+# Insert info
+
+INSERT INTO equipment_service (equipment_type, brand, model, serial_number, issue_reported, service_date, technician, status)VALUES('Autoclave', 'Melag', 'Cliniclave c45', 'SN12345',  'Fails pressure test after 20 minutes, possible gasket leak',  '2026-10-04', 'Francisco', 'Pending');
+
+
