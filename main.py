@@ -74,25 +74,22 @@ def add_service():
 # ------------------------------------------------------------------------------------------------------------------------------
 
 # Gets data from a flask route
-@app.route('/services', methods=['GET'])
+@app.route('/services/<int:id>', methods=['GET'])
 
-def get_services():
-    cursor = db.cursor()
-    sql_query = """SELECT * FROM equipment_service""" 
-    cursor.execute(sql_query)
-    rows = cursor.fetchall()
+def get_service(id):
+    try:
+        cursor = db.cursor(dictionary=True)
+        sql_query = "SELECT * FROM equipment_service WHERE id=%s" 
+        cursor.execute(sql_query, (id,))
+        service_row = cursor.fetchone()
 
-    # Extracts the column names from the query result.
-    columns = [desc[0] for desc in cursor.description]
+        if not service_row:
+            return jsonify({"error": f"Service with id {id} not found"}), 404
 
-    # Map each row (tuple) into a dictionary with column names
-    result = []
-    for row in rows:
-        # zip pairs the rows and columns by index, so if you get confused in the future, just google how do this line
-        # know what to pair?
-        result.append(dict(zip(columns, row)))
+        return jsonify(service_row), 200
 
-    return jsonify(result)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # ------------------------------------------------------------------------------------------------------------------------------
 
