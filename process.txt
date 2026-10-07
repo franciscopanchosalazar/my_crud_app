@@ -82,3 +82,7 @@ as the python file here is called main, to test we'll have to either change the 
 flask --app main run
 
 We also need to install post man to send requests in order to test.
+
+12- Now that our python file is completed (please look into it as it has too many things, analyze it in the future), we need to create a new folder call templates by using mkdir templates, this beacuse Flask by default looks for HTML files inside a folder named templates.
+13- Inside templates, create a file called: index.html by entering New-Item index.html into the terminal
+14- Start writing inside the file.
