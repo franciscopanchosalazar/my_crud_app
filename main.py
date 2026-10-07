@@ -1,13 +1,17 @@
 import mysql.connector # Driver that allows Python to talk to your MySQL database
 from dotenv import load_dotenv # Used to bring the private info from my server into this file (enviroment variables)
 import os # Lets us access those variables in Python
-from flask import Flask, request, jsonify # Web framework, reads incoming data, converts Python dictionaries into JSON responses for the client 
+from flask import Flask, request, jsonify, render_template # Web framework, reads incoming data, converts Python dictionaries into JSON responses for the client, Connect Flask to the HTML 
+
+# Creates the Flask application object, __name__ tells Flask where to look for resources.
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 # Reads the .env file and makes those values available to the program. (the variables will not be pushed into GitHub)
 load_dotenv()
-
-# Creates the Flask application object, __name__ tells Flask where to look for resources.
-app = Flask(__name__) 
 
 # Connect to mysql using credentials stored in .env
 # mysql.connector.connect will always ask for host, user, password and database
