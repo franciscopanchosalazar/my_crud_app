@@ -1,10 +1,108 @@
-<!DOCTYPE html>
+<!DOCTYPE html>   
 <html>
-    <head>
-        <title>Equipment Service App</title>
-    </head>
-    <body>
-        <h1>Welcome to Equipment Service</h1>
-        <p>This is your front-end connected to Flask.</p>
-    </body>
+<head>
+  <title>Equipment Service App</title>  <!--sets the text shown in the browser tab-->
+  
+  <!--CSS to make the page looks nicer -->
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; } 
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #cccccc; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    button { margin: 2px; }
+  </style>
+</head>
+<body>
+  <h1>Equipment Service Management</h1>
+
+  <!-- Add Service Form -->
+  <h2>Add Service</h2>
+  <form id="serviceForm">
+    <input type="text" name="equipment_type" placeholder="Equipment Type" required>
+    <input type="text" name="brand" placeholder="Brand" required>
+    <input type="text" name="model" placeholder="Model" required>
+    <input type="text" name="serial_number" placeholder="Serial Number" required>
+    <input type="text" name="issue_reported" placeholder="Issue Reported" required>
+    <input type="date" name="service_date" required>
+    <input type="text" name="technician" placeholder="Technician" required>
+    <!-- Dropdown List-->
+    <select name="status" required>
+      <option value="Pending">Pending</option>
+      <option value="In Progress">In Progress</option>
+      <option value="Completed">Completed</option>
+    </select>
+    <button type="submit">Add Service</button>
+  </form>
+
+  <!--empty box where we’ll show messages-->
+  <div id="response"></div>
+
+  <!-- Services Table -->
+  <h2>All Services</h2>
+  <button onclick="loadServices()">Load Services</button>   <!--when clicked, runs the loadServices() function (js)-->
+  <table id="servicesTable"></table>
+
+  <script>
+    // CREATE
+    document.getElementById("serviceForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const jsonData = Object.fromEntries(formData.entries());
+
+      const response = await fetch("http://127.0.0.1:5000/add_service", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(jsonData)
+      });
+
+      const result = await response.json();
+      document.getElementById("response").innerText = JSON.stringify(result, null, 2);
+      loadServices(); // refresh table
+    });
+
+    // READ
+    async function loadServices() {
+      const response = await fetch("http://127.0.0.1:5000/services");
+      const services = await response.json();
+
+      const table = document.getElementById("servicesTable");
+      table.innerHTML = "<tr><th>ID</th><th>Type</th><th>Brand</th><th>Status</th><th>Actions</th></tr>";
+
+      services.forEach(s => {
+        table.innerHTML += `<tr>
+          <td>${s.id}</td>
+          <td>${s.equipment_type}</td>
+          <td>${s.brand}</td>
+          <td>${s.status}</td>
+          <td>
+            <button onclick="updateService(${s.id}, 'Completed')">Mark Completed</button>
+            <button onclick="deleteService(${s.id})">Delete</button>
+          </td>
+        </tr>`;
+      });
+    }
+
+    // UPDATE
+    async function updateService(id, newStatus) {
+      const response = await fetch(`http://127.0.0.1:5000/services/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus })
+      });
+      const result = await response.json();
+      alert(JSON.stringify(result));
+      loadServices();
+    }
+
+    // DELETE
+    async function deleteService(id) {
+      const response = await fetch(`http://127.0.0.1:5000/services/${id}`, {
+        method: "DELETE"
+      });
+      const result = await response.json();
+      alert(JSON.stringify(result));
+      loadServices();
+    }
+  </script>
+</body>
 </html>
