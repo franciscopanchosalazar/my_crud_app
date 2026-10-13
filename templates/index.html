@@ -5,7 +5,8 @@
   
   <!--CSS to make the page looks nicer -->
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; } 
+    body { font-family: Arial, sans-serif; margin: 20px; background-color: #00a895;} 
+    h1 {color: #f2f2f2}
     table { border-collapse: collapse; width: 100%; margin-top: 20px; }
     th, td { border: 1px solid #cccccc; padding: 8px; text-align: left; }
     th { background-color: #f2f2f2; }
@@ -14,7 +15,7 @@
 </head>
 <body>
   <h1>Equipment Service Management</h1>
-
+  <hr>
   <!-- Add Service Form -->
   <h2>Add Service</h2>
   <form id="serviceForm">
@@ -31,7 +32,9 @@
       <option value="In Progress">In Progress</option>
       <option value="Completed">Completed</option>
     </select>
+    <br>
     <button type="submit">Add Service</button>
+    <button type="reset">Reset Values</button>
   </form>
 
   <!--empty box where we’ll show messages-->
