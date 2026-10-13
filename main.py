@@ -77,8 +77,22 @@ def add_service():
         return jsonify({"error": str(e)}), 500
 # ------------------------------------------------------------------------------------------------------------------------------
 
+@app.route('/services', methods=['GET'])
+def get_services():
+    try:
+        cursor = db.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM equipment_service")
+        services = cursor.fetchall()
+
+        return jsonify(services), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# ------------------------------------------------------------------------------------------------------------------------------
+
 # Gets data from a flask route
-@app.route('/services/<int:id>', methods=['GET'])
+@app.route('/services/<int:id>', methods=['GET']) # Gets an specific service
 
 def get_service(id):
     try:
