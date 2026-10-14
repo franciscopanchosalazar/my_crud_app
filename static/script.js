@@ -25,29 +25,38 @@
       const response = await fetch("http://127.0.0.1:5000/services");
       const services = await response.json();
 
-      const table = document.getElementById("servicesTable");
-      table.innerHTML = "<tr><th>ID</th><th>Type</th><th>Brand</th><th>Model</th><th>SN</th><th>Issue</th><th>Date</th><th>Technician</th><th>Status</th><th>Actions</th>";
-   
-        // <button onclick="updateService(${s.id}, 'Completed')">Mark Completed</button> if failing come back to this line
-      services.forEach(s => {
-        table.innerHTML +=`<tr>
-          <td>${s.id}</td>
-          <td>${s.equipment_type}</td>
-          <td>${s.brand}</td>
-          <td>${s.model}</td>
-          <td>${s.serial_number}</td>
-          <td>${s.issue_reported}</td>
-          <td>${s.service_date}</td>
-          <td>${s.technician}</td>
-          <td>${s.status}</td>
-          <td>
-            <button onclick="updateService(${s.id}, 'Pending')">Mark Pending</button>
-            <button onclick="updateService(${s.id}, 'In Progress')">Mark In Progress</button>
-            <button onclick="updateService(${s.id}, 'Completed')">Mark Completed</button>
-            <button onclick="deleteService(${s.id})">Delete</button>
-          </td>
-        </tr>`;
-      });
+const table = document.getElementById("servicesTable");
+table.innerHTML = `
+  <thead>
+    <tr>
+      <th>ID</th><th>Type</th><th>Brand</th><th>Model</th>
+      <th>SN</th><th>Issue</th><th>Date</th><th>Technician</th>
+      <th>Status</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody></tbody>`;
+
+const tbody = table.querySelector("tbody");
+services.forEach(s => {
+  tbody.innerHTML += `
+    <tr>
+      <td>${s.id}</td>
+      <td>${s.equipment_type}</td>
+      <td>${s.brand}</td>
+      <td>${s.model}</td>
+      <td>${s.serial_number}</td>
+      <td>${s.issue_reported}</td>
+      <td>${s.service_date}</td>
+      <td>${s.technician}</td>
+      <td>${s.status}</td>
+      <td>
+        <button onclick="updateService(${s.id}, 'Pending')">Pending</button>
+        <button onclick="updateService(${s.id}, 'In Progress')">In Progress</button>
+        <button onclick="updateService(${s.id}, 'Completed')">Completed</button>
+        <button onclick="deleteService(${s.id})">Delete</button>
+      </td>
+    </tr>`;
+});
     }
 
     // UPDATE
