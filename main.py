@@ -3,6 +3,9 @@ from dotenv import load_dotenv # Used to bring the private info from my server i
 import os # Lets us access those variables in Python
 from flask import Flask, request, jsonify, render_template # Web framework, reads incoming data, converts Python dictionaries into JSON responses for the client, Connect Flask to the HTML 
 
+from datetime import date # I'll use it to ensure the date is shown in the right format (yyyy-mm-dd)
+from datetime import datetime
+
 # Creates the Flask application object, __name__ tells Flask where to look for resources.
 app = Flask(__name__)
 
@@ -26,7 +29,7 @@ db = mysql.connector.connect(
 # It only accepts POST requests, A POST request is used when the client wants to send data to the server.
 # When someone sends data to this URL, the function add_service() runs.
 
-@app.route('/add_service', methods=['POST']) # To test use http://127.0.0.1:5000/add_service in postman
+@app.route('/add_service', methods=['POST']) # To test use http://127.0.0.1:5000/add_service in postman (unless you already add js)
 
 def add_service():
     try: 
@@ -42,6 +45,7 @@ def add_service():
                 return jsonify({"error": f"Missing '{field}' in request body"}), 400
 
         # Checks that the status is allowed by the created database (as I used ENUM in the status column when created)
+        # As the options come from a <select> tag in HTML, I don't think I should use ENUM in MySql.
         allowed_statuses = ["Pending", "In Progress", "Completed"]
 
         if data['status'] not in allowed_statuses:
@@ -84,11 +88,20 @@ def get_services():
         cursor.execute("SELECT * FROM equipment_service")
         services = cursor.fetchall()
 
+        # Ensure service_date is always a string in YYYY-MM-DD format
+        for s in services:
+            if s.get("service_date"):
+                # If it's already a string, leave it
+                if isinstance(s["service_date"], str):
+                    s["service_date"] = s["service_date"]
+                else:
+                    # If it's a date/datetime object, format it
+                    s["service_date"] = s["service_date"].strftime("%d-%m-%Y")
+
         return jsonify(services), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 # ------------------------------------------------------------------------------------------------------------------------------
 
 # Gets data from a flask route
