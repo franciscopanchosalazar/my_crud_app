@@ -87,3 +87,9 @@ We also need to install post man to send requests in order to test.
 13- Inside templates, create a file called: index.html by entering New-Item index.html into the terminal
 14- Start writing inside the file.
 15- Create a static folder with the css and scrip files so you can make the application look better.
+
+16- Start working in users validation:
+Use pip install flask-login so I can validate users, do not forget to update the requirements.txt file after every new instalation(pip freeze > requirements.txt)
+17- Create a new table for users (Enter to mysql by mysql -u root -p)
+18- Work inside the python file
+19- Create a register html page now.

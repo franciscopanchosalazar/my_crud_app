@@ -1,10 +1,15 @@
-import mysql.connector # Driver that allows Python to talk to your MySQL database
+import mysql.connector # Allows Python to talk to your MySQL databases
 from dotenv import load_dotenv # Used to bring the private info from my server into this file (enviroment variables)
 import os # Lets us access those variables in Python
-from flask import Flask, request, jsonify, render_template # Web framework, reads incoming data, converts Python dictionaries into JSON responses for the client, Connect Flask to the HTML 
+
+# Web framework, reads data sent by the browser, converts Python dictionaries into JSON responses, Connect Flask to the HTML, the last two help to send the user to another pages after actions
+from flask import Flask, request, jsonify, render_template, redirect, url_for 
 
 from datetime import date # I'll use it to ensure the date is shown in the right format (yyyy-mm-dd)
 from datetime import datetime
+
+# Used to hash a password, this means that the password created is converted into "random characters (not really random but seems like)"
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # Creates the Flask application object, __name__ tells Flask where to look for resources.
 app = Flask(__name__)
@@ -184,4 +189,34 @@ def delete_service(id):
     except Exception as e:
         # Catchs any unexpected database or code error (e)
         return jsonify({"error": str(e)}), 500
+
+# ------------------------------------------------------------------------------------------------------------------------------
+
+@app.route('/register' , methods=['GET', 'POST'])
+
+def register():
+    cursor = db.cursor()
     
+    # Checks if the user submitted the form.
+    if request.method == "POST":
+        username =  request.form["user_name"]
+        email = request.form["email"]
+        password = request.form["password"]
+
+        # Hash the password before saving
+        hashed_pw = generate_password_hash(password)
+
+        print("Username:", username)
+        print("Email:", email)
+        print("Password:", password)
+        print("Hashed:", hashed_pw)
+
+        # Insert into DB (users table)
+        sql_query = "INSERT INTO users(user_name, email, password_hash) VALUES (%s, %s, %s)"
+        cursor.execute(sql_query, (username, email, hashed_pw))
+        db.commit()
+
+        #return redirect(url_for("login"))  # Redirect to login page later
+    
+    # For now, just show a simple form
+    return render_template("register.html")

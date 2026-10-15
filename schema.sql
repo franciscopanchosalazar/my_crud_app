@@ -11,3 +11,10 @@ CREATE TABLE equipment_service (
     technician VARCHAR(100),
     status ENUM('Pending','In Progress','Completed') DEFAULT 'Pending'
 );
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    user_name VARCHAR(50) NOT NULL UNIQUE, 
+    email VARCHAR(50) NOT NULL UNIQUE, 
+    password_hash VARCHAR(50) NOT NULL
+);
