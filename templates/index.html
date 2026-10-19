@@ -11,8 +11,8 @@
     <input type="text" name="model" placeholder="Model" required>
     <input type="text" name="serial_number" placeholder="Serial Number" required>
     <input type="text" name="issue_reported" placeholder="Issue Reported" required>
-    <input type="date" name="service_date" required>
     <input type="text" name="technician" placeholder="Technician" required>
+    <input type="date" name="service_date" required>
     <!-- Dropdown List-->
     <select name="status" required>
         <option value="Pending">Pending</option>
@@ -24,13 +24,4 @@
     <button type="reset">Reset Values</button>
 </form>
 
-<!--empty box where we’ll show messages-->
-<div id="response"></div>
-
-<!-- Services Table -->
-<h2>All Services</h2>
-<button type="button" onclick="loadServices()">Load Services</button>   <!--when clicked, runs the loadServices() function (js)-->
-<table id="servicesTable"></table>
-
 {% endblock %}
-

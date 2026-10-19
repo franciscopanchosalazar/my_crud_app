@@ -16,13 +16,14 @@
       });
 
       const result = await response.json();
-      document.getElementById("response").innerText = JSON.stringify(result, null, 2);
+      alert(JSON.stringify(result));
+
       loadServices(); // refresh table
     });
 
     // READ
     async function loadServices() {
-      const response = await fetch("http://127.0.0.1:5000/services");
+      const response = await fetch("http://127.0.0.1:5000/get_services");
       const services = await response.json();
 
 const table = document.getElementById("servicesTable");

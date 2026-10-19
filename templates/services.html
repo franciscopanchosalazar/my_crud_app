@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+<!-- title passed to the base file so it can be shown in the browsers tab-->
+{% block title %}Services{% endblock %}
+
+{% block content %}
+<!-- Services Table -->
+<h2>All Services</h2>
+<button id=servicesButton type="button" onclick="loadServices()">Load Services</button>   <!--when clicked, runs the loadServices() function (js)-->
+<table id="servicesTable"></table>
+{% endblock %}

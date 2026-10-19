@@ -35,7 +35,6 @@ db = mysql.connector.connect(
 # When someone sends data to this URL, the function add_service() runs.
 
 @app.route('/add_service', methods=['POST']) # To test use http://127.0.0.1:5000/add_service in postman (unless you already add js)
-
 def add_service():
     try: 
         # Reads the incoming JSON body from the request.
@@ -86,7 +85,12 @@ def add_service():
         return jsonify({"error": str(e)}), 500
 # ------------------------------------------------------------------------------------------------------------------------------
 
-@app.route('/services', methods=['GET'])
+# Used to retrieve the services page
+@app.route('/all_services')
+def all_services():
+    return render_template('services.html')
+
+@app.route('/get_services', methods=['GET'])
 def get_services():
     try:
         cursor = db.cursor(dictionary=True)
@@ -109,29 +113,8 @@ def get_services():
         return jsonify({"error": str(e)}), 500
 # ------------------------------------------------------------------------------------------------------------------------------
 
-# Gets data from a flask route
-@app.route('/services/<int:id>', methods=['GET']) # Gets an specific service
-
-def get_service(id):
-    try:
-        cursor = db.cursor(dictionary=True)
-        sql_query = "SELECT * FROM equipment_service WHERE id=%s" 
-        cursor.execute(sql_query, (id,))
-        service_row = cursor.fetchone()
-
-        if not service_row:
-            return jsonify({"error": f"Service with id {id} not found"}), 404
-
-        return jsonify(service_row), 200
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-# ------------------------------------------------------------------------------------------------------------------------------
-
 # <int:id> captures which record to update
 @app.route('/services/<int:id>', methods=['PUT'])
-
 def update_service(id): # Here the id will come from <int:id>
     try:
         # Reads the JSON body sent in the request (request is a flask method), 
@@ -167,7 +150,6 @@ def update_service(id): # Here the id will come from <int:id>
 # ------------------------------------------------------------------------------------------------------------------------------
 
 @app.route('/services/<int:id>', methods=['DELETE'])
-
 def delete_service(id):    
     # Catch internal sql errors
     try:
@@ -193,7 +175,6 @@ def delete_service(id):
 # ------------------------------------------------------------------------------------------------------------------------------
 
 @app.route('/register' , methods=['GET', 'POST'])
-
 def register():
     cursor = db.cursor()
     
