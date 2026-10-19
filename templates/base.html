@@ -1,0 +1,31 @@
+<!DOCTYPE html>   
+
+<!-- base.html is used for common elements across all the pages -->
+
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+    
+<body>
+    <header>
+        <img id="companyLogo" src="{{ url_for('static', filename='images/logoMedicalPartner.png') }}" alt="Company Logo">
+        <h1>Equipment Service Management</h1>
+    </header>
+
+    <!-- Navegation bar-->
+    <nav id="navegationBar">
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('register') }}">Register</a></li>
+        </ul>
+    </nav>
+
+    <!-- All the content from others html file will be placed here when being called, the rest of the content remains the same -->
+    {% block content %}{% endblock %} 
+
+    <!--References the script from another file-->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

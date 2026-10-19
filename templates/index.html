@@ -1,52 +1,36 @@
-<!DOCTYPE html>   
-<html>
-<head>
-    <title>Equipment Service App</title>  <!--sets the text shown in the browser tab-->
-    <!--CSS to make the page looks nicer -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+{% extends "base.html" %}
 
-<body>
-    <header>
-        <img id="companyLogo" src="{{ url_for('static', filename='images/logoMedicalPartner.png') }}" alt="Company Logo">
-        <h1>Equipment Service Management</h1>
-    </header>
-    <hr>
-    <!-- Add Service Form -->
-    <h2>Add Service</h2>
-    <form id="serviceForm">
-        <input type="text" name="equipment_type" placeholder="Equipment Type" required>
-        <input type="text" name="brand" placeholder="Brand" required>
-        <input type="text" name="model" placeholder="Model" required>
-        <input type="text" name="serial_number" placeholder="Serial Number" required>
-        <input type="text" name="issue_reported" placeholder="Issue Reported" required>
-        <input type="date" name="service_date" required>
-        <input type="text" name="technician" placeholder="Technician" required>
-        <!-- Dropdown List-->
-        <select name="status" required>
-            <option value="Pending">Pending</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Completed">Completed</option>
-        </select>
-        <br>
-        <button type="submit">Add Service</button>
-        <button type="reset">Reset Values</button>
-    </form>
-    
-    <!-- Button to go to register -->
-    <a href="{{ url_for('register') }}">
-        <button type="button">Go to Register</button>
-    </a>
+{% block title %}Home{% endblock %}
 
-    <!--empty box where we’ll show messages-->
-    <div id="response"></div>
+{% block content %}
+<!-- Add Service Form -->
+<h2>Add Service</h2>
+<form id="serviceForm">
+    <input type="text" name="equipment_type" placeholder="Equipment Type" required>
+    <input type="text" name="brand" placeholder="Brand" required>
+    <input type="text" name="model" placeholder="Model" required>
+    <input type="text" name="serial_number" placeholder="Serial Number" required>
+    <input type="text" name="issue_reported" placeholder="Issue Reported" required>
+    <input type="date" name="service_date" required>
+    <input type="text" name="technician" placeholder="Technician" required>
+    <!-- Dropdown List-->
+    <select name="status" required>
+        <option value="Pending">Pending</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+    </select>
+    <br>
+    <button type="submit">Add Service</button>
+    <button type="reset">Reset Values</button>
+</form>
 
-    <!-- Services Table -->
-    <h2>All Services</h2>
-    <button type="button" onclick="loadServices()">Load Services</button>   <!--when clicked, runs the loadServices() function (js)-->
-    <table id="servicesTable"></table>
+<!--empty box where we’ll show messages-->
+<div id="response"></div>
 
-    <!--References the script from another file-->
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-</body>
-</html>
+<!-- Services Table -->
+<h2>All Services</h2>
+<button type="button" onclick="loadServices()">Load Services</button>   <!--when clicked, runs the loadServices() function (js)-->
+<table id="servicesTable"></table>
+
+{% endblock %}
+

@@ -1,24 +1,67 @@
+/*
+Colours:
+Blacks: #D6EEEE #0b0c10
+Greys: #333 #333333 #C5C6C7
+Blues: #06224a  
+Light blues: #9df0f0
+Whites: #cccccc
+Greens: #9ff196
+*/
 body {
   font-family: Arial, sans-serif;
   margin: 20px;
-  background-color: #D6EEEE ; /*background-color: #06224a*/ 
+  background-color: #f4f6f9;
 }
 
 header {
     display: flex;
     align-items: center;
-    background-color: #06224a;
+    background-color: #004d99;
     padding: 10px 20px;
-    border-bottom: 2px solid #cccccc;
+    color: #f4f6f9;
 }
 
 #companyLogo {
   width: 150px;
 }
 
+/* Navegation bar */
+#navegationBar {
+  background-color: #333;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#navegationBar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333333;
+}
+#navegationBar ul li{
+  float: left;
+}
+
+#navegationBar ul li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+#navegationBar a:hover {
+  background-color: #9ff196;
+}
+
+/* Titles */
 h1 {color: #D6EEEE;} /*#e0e6ee*/
 h2 {color: #06224a;}
 
+
+/* Tables */
 table {
   border-collapse: collapse;
   background-color: #f2f2f2;
