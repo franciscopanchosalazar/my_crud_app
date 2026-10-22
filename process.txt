@@ -93,3 +93,27 @@ Use pip install flask-login so I can validate users, do not forget to update the
 17- Create a new table for users (Enter to mysql by mysql -u root -p)
 18- Work inside the python file
 19- Create a register html page now.
+
+20- To understand the flow of information, it is essential this diagram:
+
+login.html
+    ↓
+POST
+    ↓
+/login route
+    ↓
+SELECT user
+    ↓
+Does user exist?
+    ↓
+YES
+    ↓
+check_password_hash()
+    ↓
+Password correct?
+    ↓
+YES
+    ↓
+Create session
+    ↓
+Redirect to home page

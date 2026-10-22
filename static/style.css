@@ -178,9 +178,39 @@ button {
   transition: background-color 0.3s;
 }
 
-
-
 #servicesButton:hover {
+  background-color: #9ff196;
+  color: #333;
+}
+
+/* Login related stuff */
+#loginForm {
+  background-color: white;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  max-width: 600px;
+}
+#loginForm input, #loginForm button {
+  display: block;
+  width: 95%;
+  margin: 10px auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+#loginForm button {
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#loginForm button:hover {
   background-color: #9ff196;
   color: #333;
 }

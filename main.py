@@ -14,7 +14,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # Creates the Flask application object, __name__ tells Flask where to look for resources.
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/') # Initial route, when opening the app it will go to the url render in the home function
 def home():
     return render_template('index.html')
 
@@ -197,7 +197,41 @@ def register():
         cursor.execute(sql_query, (username, email, hashed_pw))
         db.commit()
 
+        #return jsonify({"message": "User has been succesfully added"})
+
         #return redirect(url_for("login"))  # Redirect to login page later
     
     # For now, just show a simple form
     return render_template("register.html")
+
+# ------------------------------------------------------------------------------------------------------------------------------
+
+@app.route('/login' , methods=['GET', 'POST'])
+def login():
+    cursor = db.cursor()
+
+    # Checks the user submitted the form.
+    if request.method == "POST":
+        username =  request.form["user_name"]
+        password = request.form["password"]
+
+        print("Username:", username)
+        print("Password:", password)
+
+        # Checks for user existence
+        sql_query = "SELECT id, user_name, password_hash FROM users WHERE user_name = %s"
+        cursor.execute(sql_query, (username,))
+        user = cursor.fetchone()
+
+        if user==None:
+            print(f"{username} is not a valid user" ) # the print must be changed to do something else while I move on
+        else:
+            # Verifies the password
+            if check_password_hash(user[2], password): # user[2] is the stored hash from the database 
+                print("Login successful")   # Print must be change to do something else when moving on
+            else:
+                # Print must be change to do something else when moving on
+                print(f"{user[1]} is a valid user but")
+                print("Wrong password")
+
+    return render_template("login.html")
