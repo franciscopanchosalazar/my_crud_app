@@ -2,8 +2,9 @@ import mysql.connector # Allows Python to talk to your MySQL databases
 from dotenv import load_dotenv # Used to bring the private info from my server into this file (enviroment variables)
 import os # Lets us access those variables in Python
 
-# Web framework, reads data sent by the browser, converts Python dictionaries into JSON responses, Connect Flask to the HTML, the last two help to send the user to another pages after actions
-from flask import Flask, request, jsonify, render_template, redirect, url_for 
+# Web framework, reads data sent by the browser, converts Python dictionaries into JSON responses, Connect Flask to the HTML, 
+# The next two help to send the user to another pages after actions, saves users in the session
+from flask import Flask, request, jsonify, render_template, redirect, url_for, session 
 
 from datetime import date # I'll use it to ensure the date is shown in the right format (yyyy-mm-dd)
 from datetime import datetime
@@ -14,9 +15,17 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # Creates the Flask application object, __name__ tells Flask where to look for resources.
 app = Flask(__name__)
 
+# Creates a session key
+app.secret_key = "my_app_key"
+
+# ------------------------------------------------------------------------------------------------------------------------------
+
 @app.route('/') # Initial route, when opening the app it will go to the url render in the home function
 def home():
+    #username = session.get("username")  # username takes the value storaged in the session
+    print(session.get("username"))
     return render_template('index.html')
+# ------------------------------------------------------------------------------------------------------------------------------
 
 # Reads the .env file and makes those values available to the program. (the variables will not be pushed into GitHub)
 load_dotenv()
@@ -29,6 +38,8 @@ db = mysql.connector.connect(
     password=os.getenv("DB_PASSWORD"),
     database=os.getenv("DB_NAME")
 )
+
+# ------------------------------------------------------------------------------------------------------------------------------
 
 # Defines a Flask route at /add_service.
 # It only accepts POST requests, A POST request is used when the client wants to send data to the server.
@@ -89,6 +100,7 @@ def add_service():
 @app.route('/all_services')
 def all_services():
     return render_template('services.html')
+# ------------------------------------------------------------------------------------------------------------------------------
 
 @app.route('/get_services', methods=['GET'])
 def get_services():
@@ -171,7 +183,6 @@ def delete_service(id):
     except Exception as e:
         # Catchs any unexpected database or code error (e)
         return jsonify({"error": str(e)}), 500
-
 # ------------------------------------------------------------------------------------------------------------------------------
 
 @app.route('/register' , methods=['GET', 'POST'])
@@ -203,7 +214,6 @@ def register():
     
     # For now, just show a simple form
     return render_template("register.html")
-
 # ------------------------------------------------------------------------------------------------------------------------------
 
 @app.route('/login' , methods=['GET', 'POST'])
@@ -215,8 +225,9 @@ def login():
         username =  request.form["user_name"]
         password = request.form["password"]
 
-        print("Username:", username)
-        print("Password:", password)
+        # Used to tests
+        # print("Username:", username) 
+        # print("Password:", password)
 
         # Checks for user existence
         sql_query = "SELECT id, user_name, password_hash FROM users WHERE user_name = %s"
@@ -228,7 +239,11 @@ def login():
         else:
             # Verifies the password
             if check_password_hash(user[2], password): # user[2] is the stored hash from the database 
-                print("Login successful")   # Print must be change to do something else when moving on
+                # print("Login successful")   # Used to tests
+
+                session["username"] = username # With this line the session will remember the current user
+                return redirect(url_for("home"))
+            
             else:
                 # Print must be change to do something else when moving on
                 print(f"{user[1]} is a valid user but")
