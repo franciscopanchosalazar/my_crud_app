@@ -23,7 +23,11 @@ app.secret_key = "my_app_key"
 @app.route('/') # Initial route, when opening the app it will go to the url render in the home function
 def home():
     #username = session.get("username")  # username takes the value storaged in the session
-    print(session.get("username"))
+    # print(session.get("username")) # Used to test.
+
+    if "username" not in session:
+        return redirect(url_for("login"))
+
     return render_template('index.html')
 # ------------------------------------------------------------------------------------------------------------------------------
 
@@ -99,6 +103,9 @@ def add_service():
 # Used to retrieve the services page
 @app.route('/all_services')
 def all_services():
+    if "username" not in session:
+        return redirect(url_for("login"))
+    
     return render_template('services.html')
 # ------------------------------------------------------------------------------------------------------------------------------
 
@@ -235,13 +242,13 @@ def login():
         user = cursor.fetchone()
 
         if user==None:
-            print(f"{username} is not a valid user" ) # the print must be changed to do something else while I move on
+            print(f"{username} is not a valid user" ) # the print must be changed to do something else while I move on.
         else:
             # Verifies the password
-            if check_password_hash(user[2], password): # user[2] is the stored hash from the database 
+            if check_password_hash(user[2], password): # user[2] is the stored hash from the database. 
                 # print("Login successful")   # Used to tests
 
-                session["username"] = username # With this line the session will remember the current user
+                session["username"] = username # With this line the session will remember the current user.
                 return redirect(url_for("home"))
             
             else:
@@ -250,3 +257,9 @@ def login():
                 print("Wrong password")
 
     return render_template("login.html")
+# ------------------------------------------------------------------------------------------------------------------------------
+
+@app.route('/logout')
+def logout():
+    session.pop("username", None) # Removes 'username' from the session if it exists.
+    return redirect(url_for("login"))

@@ -18,12 +18,18 @@
     <!-- Navegation bar-->
     <nav id="navegationBar">
         <ul>
+            <!-- url_for("function_name") asks Flask: "Give me the URL associated with this function." -->
             <li><a href="{{ url_for('home') }}">Home</a></li>
             <li><a href="{{ url_for('register') }}">Register</a></li>
             <li><a href="{{ url_for('all_services') }}">Services</a></li>
             <li><a href="{{ url_for('login') }}">Log in</a></li>
+            <li><a href="{{ url_for('logout') }}">Log out</a></li>
         </ul>
     </nav>
+
+    {% if session.get('username') %}
+        {{ session.get('username') }}
+    {% endif %}
 
     <!-- All the content from others html file will be placed here when being called, the rest of the content remains the same -->
     {% block content %}{% endblock %} 
