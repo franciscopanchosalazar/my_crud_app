@@ -19,14 +19,25 @@
     <nav id="navegationBar">
         <ul>
             <!-- url_for("function_name") asks Flask: "Give me the URL associated with this function." -->
-            <li><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="{{ url_for('register') }}">Register</a></li>
-            <li><a href="{{ url_for('all_services') }}">Services</a></li>
-            <li><a href="{{ url_for('login') }}">Log in</a></li>
-            <li><a href="{{ url_for('logout') }}">Log out</a></li>
+            <!-- Only loged in users can see this options -->
+            {% if session.get('username') %}
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                
+                <!-- Out of loged in users, only users with admin role can see this options -->
+                {% if session.get('role') == 'admin' %}
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                    <li><a href="{{ url_for('all_users') }}">Users</a></li>
+                {% endif %}
+
+                <li><a href="{{ url_for('all_services') }}">Services</a></li>
+                <li><a href="{{ url_for('logout') }}">Log out</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Log in</a></li>
+            {% endif %}
         </ul>
     </nav>
 
+    <!-- Shows user name under the bar -->
     {% if session.get('username') %}
         {{ session.get('username') }}
     {% endif %}

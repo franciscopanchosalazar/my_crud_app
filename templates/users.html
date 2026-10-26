@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+<!-- title passed to the base file so it can be shown in the browsers tab-->
+{% block title %}Users{% endblock %}
+
+{% block content %}
+<!-- Users Table -->
+<h2>All Users</h2>
+<button id=usersButton type="button" onclick="loadUsers()">Load Users</button>   <!--when clicked, runs the loadUsers() function (js)-->
+<table id="usersTable"></table>
+{% endblock %}

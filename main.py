@@ -22,7 +22,7 @@ app.secret_key = "my_app_key"
 
 @app.route('/') # Initial route, when opening the app it will go to the url render in the home function
 def home():
-    #username = session.get("username")  # username takes the value storaged in the session
+    # username = session.get("username")  # username takes the value storaged in the session
     # print(session.get("username")) # Used to test.
 
     if "username" not in session:
@@ -194,6 +194,12 @@ def delete_service(id):
 
 @app.route('/register' , methods=['GET', 'POST'])
 def register():
+    if 'username' not in session:   # Ensure that only can access to this option while logged in
+        return redirect(url_for('login'))
+
+    if session.get("role") != "admin":  # Only users with admin role can access to register new users
+        return "Access denied"
+
     cursor = db.cursor()
     
     # Checks if the user submitted the form.
@@ -223,11 +229,32 @@ def register():
     return render_template("register.html")
 # ------------------------------------------------------------------------------------------------------------------------------
 
+@app.route('/all_users')
+def all_users():
+    if "username" not in session:
+        return redirect(url_for("login"))
+    
+    return render_template('users.html')
+# ------------------------------------------------------------------------------------------------------------------------------
+
+@app.route('/get_users', methods=['GET'])
+def get_users():
+    try:
+        cursor = db.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM users")
+        users = cursor.fetchall()
+
+        return jsonify(users), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+# ------------------------------------------------------------------------------------------------------------------------------
+
 @app.route('/login' , methods=['GET', 'POST'])
 def login():
     cursor = db.cursor()
 
-    # Checks the user submitted the form.
+    # Checks the user submitted from the form.
     if request.method == "POST":
         username =  request.form["user_name"]
         password = request.form["password"]
@@ -237,7 +264,7 @@ def login():
         # print("Password:", password)
 
         # Checks for user existence
-        sql_query = "SELECT id, user_name, password_hash FROM users WHERE user_name = %s"
+        sql_query = "SELECT id, user_name, password_hash, role FROM users WHERE user_name = %s"
         cursor.execute(sql_query, (username,))
         user = cursor.fetchone()
 
@@ -245,10 +272,11 @@ def login():
             print(f"{username} is not a valid user" ) # the print must be changed to do something else while I move on.
         else:
             # Verifies the password
-            if check_password_hash(user[2], password): # user[2] is the stored hash from the database. 
+            if user and check_password_hash(user[2], password): # user[2] is the stored hash from the database. 
                 # print("Login successful")   # Used to tests
 
                 session["username"] = username # With this line the session will remember the current user.
+                session["role"] = user[3] # We can storage the role of the specific user
                 return redirect(url_for("home"))
             
             else:

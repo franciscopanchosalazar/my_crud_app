@@ -62,9 +62,39 @@ header {
 h1 {color: #f4f6f9;} /*#e0e6ee*/
 h2 {color: #06224a;}
 
-/* Index related stuff */
+/* Login related stuff */
+#loginForm {
+  background-color: white;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  max-width: 600px;
+}
+#loginForm input, #loginForm button {
+  display: block;
+  width: 95%;
+  margin: 10px auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
 
-/* Form */
+#loginForm button {
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#loginForm button:hover {
+  background-color: #9ff196;
+  color: #333;
+}
+
+/* Index related stuff */
 #serviceForm{
   background-color: white;
   padding: 20px;
@@ -98,37 +128,7 @@ h2 {color: #06224a;}
   color: #333;
 }
 
-
-/* Tables */
-table {
-  border-collapse: collapse;
-  background-color: #f2f2f2;
-  width: 100%;
-  margin-top: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-th {
-  background-color: #9ff196;
-}
-
-tbody tr:nth-child(even) {
-  background-color: #9df0f0;
-}
-
-button {
-  margin: 2px;
-  width: 100px;
-}
-
 /* Register related stuff */
-
 #registerForm {
   background-color: white;
   padding: 20px;
@@ -138,7 +138,7 @@ button {
   max-width: 600px;
 }
 
-#registerForm input, #registerForm button {
+#registerForm input, #registerForm select, #registerForm button {
   display: block;
   width: 95%;
   margin: 10px auto;
@@ -183,34 +183,30 @@ button {
   color: #333;
 }
 
-/* Login related stuff */
-#loginForm {
-  background-color: white;
-  padding: 20px;
-  margin: 20px auto;
-  border-radius: 8px;
+/* Tables */
+table {
+  border-collapse: collapse;
+  background-color: #f2f2f2;
+  width: 100%;
+  margin-top: 20px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  max-width: 600px;
-}
-#loginForm input, #loginForm button {
-  display: block;
-  width: 95%;
-  margin: 10px auto;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
 }
 
-#loginForm button {
-  background-color: #0066cc;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s;
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
 }
 
-#loginForm button:hover {
+th {
   background-color: #9ff196;
-  color: #333;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #9df0f0;
+}
+
+button {
+  margin: 2px;
+  width: 100px;
 }

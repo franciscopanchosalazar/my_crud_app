@@ -17,4 +17,5 @@ CREATE TABLE users (
     user_name VARCHAR(50) NOT NULL UNIQUE, 
     email VARCHAR(50) NOT NULL UNIQUE, 
     password_hash VARCHAR(500) NOT NULL
+    role VARCHAR(20) NOT NULL DEFAULT 'user'
 );

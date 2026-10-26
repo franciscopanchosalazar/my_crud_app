@@ -1,7 +1,7 @@
 // CREATE
     document.getElementById("serviceForm").addEventListener("submit", async function(e) {
       e.preventDefault(); //Avoids the page from reloading
-      const formData = new FormData(this); //Collects the form data, this refers to the form itself.
+      const formData = new FormData(this); //Collects the form data, 'this' refers to the form itself.
       const jsonData = Object.fromEntries(formData.entries()); //entries() gives us key/value pairs and Object.fromEntries converts them into a js object.
 
       //await waits until the server replies before moving on.
@@ -81,3 +81,4 @@ services.forEach(s => {
       alert(JSON.stringify(result));
       loadServices();
     }
+    
