@@ -183,6 +183,28 @@ h2 {color: #06224a;}
   color: #333;
 }
 
+/* Users related stuff */
+#usersButton {
+  display: block;
+  width: 95%;
+  margin: 10px auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#usersButton:hover {
+  background-color: #9ff196;
+  color: #333;
+}
+
 /* Tables */
 table {
   border-collapse: collapse;

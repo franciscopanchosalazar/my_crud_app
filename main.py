@@ -45,6 +45,7 @@ db = mysql.connector.connect(
 
 # ------------------------------------------------------------------------------------------------------------------------------
 
+# SERVICES STUFF
 # Defines a Flask route at /add_service.
 # It only accepts POST requests, A POST request is used when the client wants to send data to the server.
 # When someone sends data to this URL, the function add_service() runs.
@@ -109,6 +110,7 @@ def all_services():
     return render_template('services.html')
 # ------------------------------------------------------------------------------------------------------------------------------
 
+# Used when pressing the button
 @app.route('/get_services', methods=['GET'])
 def get_services():
     try:
@@ -192,6 +194,8 @@ def delete_service(id):
         return jsonify({"error": str(e)}), 500
 # ------------------------------------------------------------------------------------------------------------------------------
 
+# USERS STUFF
+
 @app.route('/register' , methods=['GET', 'POST'])
 def register():
     if 'username' not in session:   # Ensure that only can access to this option while logged in
@@ -207,25 +211,29 @@ def register():
         username =  request.form["user_name"]
         email = request.form["email"]
         password = request.form["password"]
+        role = request.form["role"]
 
         # Hash the password before saving
         hashed_pw = generate_password_hash(password)
 
+        # Used to test
+        """
         print("Username:", username)
         print("Email:", email)
         print("Password:", password)
         print("Hashed:", hashed_pw)
+        print("Role:", role)
+        """
 
         # Insert into DB (users table)
-        sql_query = "INSERT INTO users(user_name, email, password_hash) VALUES (%s, %s, %s)"
-        cursor.execute(sql_query, (username, email, hashed_pw))
+        sql_query = "INSERT INTO users(user_name, email, password_hash, role) VALUES (%s, %s, %s, %s)"
+        cursor.execute(sql_query, (username, email, hashed_pw, role))
         db.commit()
 
         #return jsonify({"message": "User has been succesfully added"})
 
         #return redirect(url_for("login"))  # Redirect to login page later
     
-    # For now, just show a simple form
     return render_template("register.html")
 # ------------------------------------------------------------------------------------------------------------------------------
 
@@ -233,6 +241,9 @@ def register():
 def all_users():
     if "username" not in session:
         return redirect(url_for("login"))
+
+    if session.get("role") != "admin":  # Only users with admin role can access to register new users
+        return "Access denied"
     
     return render_template('users.html')
 # ------------------------------------------------------------------------------------------------------------------------------
@@ -247,6 +258,30 @@ def get_users():
         return jsonify(users), 200
 
     except Exception as e:
+        return jsonify({"error": str(e)}), 500
+# ------------------------------------------------------------------------------------------------------------------------------
+
+@app.route('/users/<int:id>', methods=['DELETE'])
+def delete_user(id):    
+    # Catch internal sql errors
+    try:
+        cursor = db.cursor()
+        
+        # Delete the matching row in the database.
+        sql_query = "DELETE FROM users WHERE id=%s";    
+        
+        # The second argument must be a sequence or tuple of values that match the placeholders in the SQL string
+        cursor.execute(sql_query, (id,)) 
+
+        # Tells us how many rows were deleted
+        if cursor.rowcount == 0:
+            return jsonify({"error": "Service not found"}), 404
+
+        db.commit()
+        return jsonify({"message": f"User with id {id} deleted"})
+
+    except Exception as e:
+        # Catchs any unexpected database or code error (e)
         return jsonify({"error": str(e)}), 500
 # ------------------------------------------------------------------------------------------------------------------------------
 
